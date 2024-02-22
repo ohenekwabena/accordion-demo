@@ -48,19 +48,21 @@ function Accordion() {
 
   return (
     <Wrapper>
-      <ToggleButton onClick={toggleMultiSelect}>Enable Multi-selection</ToggleButton>
+      <ToggleButton onClick={toggleMultiSelect}>{`Enable ${
+        enableMultiSelection ? "single " : "multi-"
+      }selection`}</ToggleButton>
       <h6>{enableMultiSelection ? "Multi" : "Single"}</h6>
       <div>
         {DATA?.map(({ id, question, answer }) => (
           <div key={id}>
             <Header onClick={enableMultiSelection ? () => handleMultipleSelect(id) : () => handleSingleSelect(id)}>
               <h3>{question}</h3>
-              <Arrow animate={animateMap[id] ? 1 : 0} />{" "}
+              <Arrow animate={animateMap[id] ? 1 : 0} />
               {/* To avoid console error for passing custom boolean property to styled component*/}
             </Header>
             {enableMultiSelection
-              ? multiple.indexOf(id) !== -1 && <div>{answer}</div>
-              : selected === id && <div>{answer}</div>}
+              ? multiple.indexOf(id) !== -1 && <Answer expanded={animateMap[id] ? 1 : 0}>{answer}</Answer>
+              : selected === id && <Answer expanded={animateMap[id] ? 1 : 0}>{answer}</Answer>}
           </div>
         ))}
       </div>
@@ -73,6 +75,7 @@ const Wrapper = styled.div`
 
   & h6 {
     margin: 6px 0 0 0;
+    padding-left: 6px;
   }
 `;
 
@@ -121,6 +124,38 @@ const Arrow = styled(ChevronDown)`
         `
       : css`
           ${arrowRotateIn} 0.2s ease-in
+        `};
+`;
+
+const collapse = keyframes`
+100% {
+max-height: auto;
+opacity: 1;
+}
+0% {
+max-height: 0;
+opacity: 0;
+}`;
+
+const expand = keyframes`
+0% {
+max-height: 0;
+opacity: 0;
+}
+100% {
+max-height: auto;
+opacity: 1;
+}`;
+
+const Answer = styled.div`
+  overflow: hidden;
+  animation: ${({ expanded }) =>
+    expanded
+      ? css`
+          ${expand} 0.4s ease-in-out forwards
+        `
+      : css`
+          ${collapse} 0.4s ease-in-out forwards
         `};
 `;
 
