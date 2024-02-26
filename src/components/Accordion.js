@@ -61,8 +61,8 @@ function Accordion() {
               {/* To avoid console error for passing custom boolean property to styled component*/}
             </Header>
             {enableMultiSelection
-              ? multiple.indexOf(id) !== -1 && <Answer expanded={animateMap[id] ? 1 : 0}>{answer}</Answer>
-              : selected === id && <Answer expanded={animateMap[id] ? 1 : 0}>{answer}</Answer>}
+              ? multiple.indexOf(id) !== -1 && <Answer>{answer}</Answer>
+              : selected === id && <Answer>{answer}</Answer>}
           </div>
         ))}
       </div>
@@ -127,16 +127,6 @@ const Arrow = styled(ChevronDown)`
         `};
 `;
 
-const collapse = keyframes`
-100% {
-max-height: auto;
-opacity: 1;
-}
-0% {
-max-height: 0;
-opacity: 0;
-}`;
-
 const expand = keyframes`
 0% {
 max-height: 0;
@@ -149,14 +139,7 @@ opacity: 1;
 
 const Answer = styled.div`
   overflow: hidden;
-  animation: ${({ expanded }) =>
-    expanded
-      ? css`
-          ${expand} 0.4s ease-in-out forwards
-        `
-      : css`
-          ${collapse} 0.4s ease-in-out forwards
-        `};
+  animation: ${expand} 0.4s ease-in-out forwards;
 `;
 
 export default Accordion;
